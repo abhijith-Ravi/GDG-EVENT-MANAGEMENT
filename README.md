@@ -39,6 +39,8 @@ This project is a web development application designed for event management, spe
 2. Create a new database in MySQL Workbench (e.g., event_management).
 3. Update the database connection details in your backend code if necessary (e.g., username, password, database name).
 
+### checkout Project walkthrough video in the below link
+https://drive.google.com/file/d/1wf8lLh6f3vO51bb7Jj6xG1QRsSJXP6r_/view
 
 **Enjoy the Website!**
 And there you go! Your event management website is up and running.
