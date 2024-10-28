@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup</title>
+    <link rel="stylesheet" href="styleinout.css">
+</head>
+<style>
+    body {
+  font-family: Arial, sans-serif;
+  background-image: url("desktop-wallpaper-website-backgrounds-login-page.jpg");/* Use the path to your uploaded image here */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin: 0;
+  padding: 0;
+}
+</style>
+<body>
+    <div class="container">
+        <h2>Signup</h2>
+        <form id="signupForm">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            
+            <label for="usertype">User Type:</label>
+            <select id="usertype" name="usertype" required>
+                <option value="admin">Admin</option>
+                <option value="student">Student</option>
+            </select>
+            
+            <button type="button" onclick="signup()">Signup</button>
+        </form>
+        <p id="message"></p>
+    </div>
+
+    <script>
+        async function signup() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const usertype = document.getElementById('usertype').value;
+
+            const response = await fetch('http://localhost:8080/gdg/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, password, usertype })
+            });
+            
+            const isAuthenticated = await response.json();
+            const message = document.getElementById('message');
+            if (response.ok) {
+              if (isAuthenticated === true) {
+                message.textContent = 'Welcome to GDG';
+                message.style.color = 'green';
+                window.location.href = "1signin.html";
+                
+              }
+            else {
+                message.textContent = 'Signup failed. Try again.';
+                message.style.color = 'red';
+            }}
+        }
+    </script>
+</body>
+</html>

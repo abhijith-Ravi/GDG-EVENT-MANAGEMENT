@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Update Event</title>
+  <style>
+    /* General styling for the page */
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #f4f6f9;
+    }
+
+    /* Card container for form */
+    .form-container {
+      background-color: #fff;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+      width: 300px;
+      text-align: center;
+    }
+
+    /* Title */
+    .form-title {
+      font-size: 24px;
+      margin-bottom: 1.5rem;
+      color: #333;
+    }
+
+    /* Input styling */
+    .form-input {
+      width: 100%;
+      padding: 0.5rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    /* Button styling */
+    .update-button {
+      background-color: #4caf50;
+      color: #fff;
+      width: 100%;
+      padding: 0.75rem;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .update-button:hover {
+      background-color: #388e3c;
+    }
+    .back-button {
+  background-color: #007bff; /* Primary color */
+  color: #ffffff; /* Text color */
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  margin-top: 10px;
+}
+
+/* Hover effect */
+.back-button:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+  </style>
+</head>
+<body>
+
+  <div class="form-container">
+    <h2 class="form-title">Update Event</h2>
+    <input type="text" id="event_name" class="form-input" placeholder="Event Name" required>
+    <input type="datetime-local" id="date" class="form-input" placeholder="Date" required>
+    <input type="text" id="description" class="form-input" placeholder="Description" required>
+    <input type="text" id="location" class="form-input" placeholder="Location" required>
+    <button class="update-button" onclick="updateEvent()">Update Event</button>
+    <button class="back-button" onclick="goBack()">Back</button>
+
+  </div>
+
+  <script>
+    function goBack() {
+  window.history.back();
+}
+    async function updateEvent() {
+      // Get form values
+      const event_name = document.getElementById("event_name").value;
+      const date = document.getElementById("date").value;
+      const description = document.getElementById("description").value;
+      const location = document.getElementById("location").value;
+
+      try {
+        const response = await fetch("http://localhost:8080/api/events", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+          },
+          body: JSON.stringify({
+            event_name: event_name,
+            date: date,
+            description: description,
+            location: location
+          })
+        });
+
+        // Check response status
+        if (response.ok) {
+          alert(`Event "${event_name}" updated successfully.`);
+          // Clear form fields
+          document.getElementById("event_name").value = "";
+          document.getElementById("date").value = "";
+          document.getElementById("description").value = "";
+          document.getElementById("location").value = "";
+        } else {
+          throw new Error(`Failed to update event: ${response.status} ${response.statusText}`);
+        }
+      } catch (error) {
+        console.error("Error updating event:", error);
+        alert("Failed to update event. Please try again later.");
+      }
+    }
+  </script>
+
+</body>
+</html>

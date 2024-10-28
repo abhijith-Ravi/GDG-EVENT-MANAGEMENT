@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signin</title>
+    <link rel="stylesheet" href="styleSignIn.css">
+</head>
+<style>
+    .create{
+        margin-top: 5px;
+        font-family: Arial, sans-serif;
+
+    }
+    body {
+  font-family: Arial, sans-serif;
+  background-image: url("desktop-wallpaper-website-backgrounds-login-page.jpg");/* Use the path to your uploaded image here */
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  margin: 0;
+  padding: 0;
+}
+</style>
+<body>
+    <div class="container">
+        <h2>Signin</h2>
+        <form id="signinForm">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+
+            
+            
+            <button type="button" onclick="signin()">Signin</button>
+
+            <div class="create">Don't have account?<a href="2signup.html">Sign Up</div>
+
+        </form>
+        <p id="message"></p>
+    </div>
+
+    <script>
+     async function signin() {
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    // $document.querySelector("#welcome").innerHTML();
+
+    const url = `http://localhost:8080/gdg/signin`;
+
+    const messageElement = document.getElementById('message');
+    try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({ username, password })
+        });
+
+        // Check if the response is OK
+        if (!response.ok) {
+            throw new Error(`Server error: ${response.status} ${response.statusText}`);
+        }
+
+        // Try parsing JSON
+        const data = await response.json();
+
+        // Log the parsed response for debugging
+        console.log("Parsed API Response:", data);
+
+        // Check if the necessary properties exist
+        if (data.username && data.usertype) {
+            // Store username and usertype
+            localStorage.setItem("username", data.username);
+            localStorage.setItem("usertype", data.usertype);
+
+            // Navigate to the next page (update the path as needed)
+            window.location.href = "3index.html";
+        } else {
+            throw new Error("Invalid response format: Missing username or usertype");
+        }
+
+    } catch (error) {
+        console.error("Error during signin:", error);
+        messageElement.textContent = `An error occurred: ${error.message}`;
+        messageElement.style.color = 'red';
+    }
+}
+
+    </script>
+</body>
+</html>
