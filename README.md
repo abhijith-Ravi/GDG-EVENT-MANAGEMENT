@@ -34,7 +34,7 @@ This project is a web development application designed for event management, spe
    ```bash
    mvn clean
    mvn install
-####Database Configuration
+#### Database Configuration
 1. Install MySQL Workbench if you haven't already.
 2. Create a new database in MySQL Workbench (e.g., event_management).
 3. Update the database connection details in your backend code if necessary (e.g., username, password, database name).
