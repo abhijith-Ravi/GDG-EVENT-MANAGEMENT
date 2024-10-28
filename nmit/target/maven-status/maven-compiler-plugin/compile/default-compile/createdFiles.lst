@@ -1,0 +1,17 @@
+com\gdg\nmit\dto\EventRegisterPayload.class
+com\gdg\nmit\service\eventTableService.class
+com\gdg\nmit\serviceimpl\loginServiceImpl.class
+com\gdg\nmit\repository\EventRegisterRepository.class
+com\gdg\nmit\controller\eventTableController.class
+com\gdg\nmit\entity\LoginEntity.class
+com\gdg\nmit\service\loginService.class
+com\gdg\nmit\serviceimpl\EventTableServiceImpl.class
+com\gdg\nmit\entity\EventRegisterEntity.class
+com\gdg\nmit\repository\loginRepository.class
+com\gdg\nmit\entity\EventTable.class
+com\gdg\nmit\repository\eventTableRepository.class
+com\gdg\nmit\serviceimpl\EventRegisterServiceImpl.class
+com\gdg\nmit\dto\addEventPayload.class
+com\gdg\nmit\service\EventRegisterService.class
+com\gdg\nmit\controller\EventRegistration.class
+com\gdg\nmit\NmitApplication.class
