@@ -4,15 +4,16 @@ import com.gdg.nmit.dto.NewUser;
 import com.gdg.nmit.dto.signin;
 import com.gdg.nmit.dto.updatePassword;
 import com.gdg.nmit.entity.LoginEntity;
+import com.gdg.nmit.dto.LoginResponse;
 
 public interface loginService {
 
-	Boolean addUser(NewUser payload);
+    Boolean addUser(NewUser payload);
 
-	LoginEntity signin(signin payload);
+    LoginResponse signin(signin payload);
 
-	Boolean update(updatePassword payload);
+    Boolean update(updatePassword payload);
 
-	Boolean delete(signin payload);
+    Boolean delete(Integer userId);
 
 }

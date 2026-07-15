@@ -8,86 +8,131 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gdg.nmit.dto.addEventPayload;
+import com.gdg.nmit.entity.EventStatus;
 import com.gdg.nmit.entity.EventTable;
 import com.gdg.nmit.repository.EventRegisterRepository;
 import com.gdg.nmit.repository.eventTableRepository;
 import com.gdg.nmit.service.eventTableService;
+
 @Service
-public class EventTableServiceImpl implements eventTableService
-{
-	@Autowired
-	private EventRegisterRepository eventRegisterRepository;
-	
-	@Autowired
-	private eventTableRepository  eventtableRepository;
-	
-	@Override
-	public Boolean addEvents(addEventPayload payload) {
-EventTable event=new EventTable();
-EventTable eveentexist= eventtableRepository.findByEventName(payload.getEvent_name());
-if(eveentexist!=null) {
-	return false;
-}
-event.setEvent_name(payload.getEvent_name());
-event.setDescription(payload.getDescription());
-DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-event.setDate(LocalDateTime.parse(payload.getDate(), formatter));
-event.setLocation(payload.getLocation());
-eventtableRepository.save(event);
-return true;
-	}
+public class EventTableServiceImpl implements eventTableService {
 
-	@Override
-	public List<EventTable> findAllEvents() {
-		return eventtableRepository.findAll();
-	}
+    @Autowired
+    private EventRegisterRepository eventRegisterRepository;
 
-	@Override
-	public EventTable findByEventName(String eventName) {
-		return eventtableRepository.findByEventName(eventName);
-	}
+    @Autowired
+    private eventTableRepository eventtableRepository;
 
-	@Override
-	public Boolean updateEvent(addEventPayload payload) {
-		EventTable eveentexist= eventtableRepository.findByEventName(payload.getEvent_name());
-if(eveentexist!=null) {
-	eveentexist.setDescription(payload.getDescription());
-	eveentexist.setLocation(payload.getLocation());
-	DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
-	eveentexist.setDate(LocalDateTime.parse(payload.getDate(), formatter));
-	eventtableRepository.save(eveentexist);
-	return true;
-}
-		return false;
-	}
+    @Override
+    public Boolean addEvents(addEventPayload payload) {
 
-	@Override
-	public Boolean deleteEvent(addEventPayload payload) {
-		EventTable eveentexist= eventtableRepository.findByEventName(payload.getEvent_name());
-		if(eveentexist!=null) {
-			eventRegisterRepository.deleteByEventId(eveentexist.getId());
-			eventtableRepository.delete(eveentexist);
-			return true;
-		}
-		return false;
-	}
+        if (eventtableRepository.findByEventName(payload.getEvent_name()).isPresent()) {
+            return false;
+        }
 
-	@Override
-	public List<EventTable> findAllPastEvents() {
-        LocalDateTime currentDateTime = LocalDateTime.now();
+        EventTable event = new EventTable();
 
-		return eventtableRepository.findAllPastEvents(currentDateTime);
-		
-	}
+        event.setEvent_name(payload.getEvent_name());
+        event.setDescription(payload.getDescription());
 
-	@Override
-	public List<EventTable> findAllUpcomingEvents() {
-		 LocalDateTime currentDateTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
 
-			return eventtableRepository.findAllUpcomingEvent(currentDateTime);
-			
-	}
+        event.setDate(LocalDateTime.parse(payload.getDate(), formatter));
 
-	
+        event.setLocation(payload.getLocation());
+
+        event.setCapacity(payload.getCapacity());
+
+        event.setAvailableSeats(payload.getCapacity());
+
+        if (payload.getRegistrationDeadline() != null
+                && !payload.getRegistrationDeadline().isBlank()) {
+
+            event.setRegistrationDeadline(
+                    LocalDateTime.parse(payload.getRegistrationDeadline(), formatter));
+        }
+
+        event.setStatus(EventStatus.valueOf(payload.getStatus().toUpperCase()));
+
+        eventtableRepository.save(event);
+
+        return true;
+    }
+
+    @Override
+    public List<EventTable> findAllEvents() {
+        return eventtableRepository.findAll();
+    }
+
+    @Override
+    public EventTable findByEventName(String eventName) {
+
+        return eventtableRepository
+                .findByEventName(eventName)
+                .orElse(null);
+    }
+
+    @Override
+    public Boolean updateEvent(addEventPayload payload) {
+
+        EventTable event = eventtableRepository
+                .findByEventName(payload.getEvent_name())
+                .orElse(null);
+
+        if (event == null) {
+            return false;
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
+
+        event.setDescription(payload.getDescription());
+        event.setLocation(payload.getLocation());
+        event.setDate(LocalDateTime.parse(payload.getDate(), formatter));
+
+        event.setCapacity(payload.getCapacity());
+
+        if (payload.getRegistrationDeadline() != null
+                && !payload.getRegistrationDeadline().isBlank()) {
+
+            event.setRegistrationDeadline(
+                    LocalDateTime.parse(payload.getRegistrationDeadline(), formatter));
+        }
+
+        event.setStatus(EventStatus.valueOf(payload.getStatus().toUpperCase()));
+
+        eventtableRepository.save(event);
+
+        return true;
+    }
+
+    @Override
+    public Boolean deleteEvent(Integer eventId) {
+
+        EventTable event = eventtableRepository.findById(eventId).orElse(null);
+
+        if (event == null) {
+            return false;
+        }
+
+        eventRegisterRepository.deleteByEventId(eventId);
+
+        eventtableRepository.delete(event);
+
+        return true;
+    }
+
+    @Override
+    public List<EventTable> findAllPastEvents() {
+
+        return eventtableRepository.findByDateBefore(LocalDateTime.now());
+
+    }
+
+    @Override
+    public List<EventTable> findAllUpcomingEvents() {
+
+        return eventtableRepository.findByDateAfter(LocalDateTime.now());
+
+    }
 
 }

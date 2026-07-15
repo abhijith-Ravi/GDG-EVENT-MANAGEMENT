@@ -1,74 +1,162 @@
 package com.gdg.nmit.entity;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
+import java.util.List;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
+
+
 
 @Data
 @Entity
-@Table(name="eventstable")
+@Table(name = "events")
 public class EventTable {
 
-	@Id
-	@Column(name="id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY) // Use GenerationType.IDENTITY for auto-increment
-	private String id;
-	@Column(name="event_name")
-	private String event_name;
-	@Column(name="description")
-	private String description;
-	@Column(name="date")
-	private LocalDateTime  date;
-	
-	public LocalDateTime getDate() {
-		return date;
-	}
-	public void setDate(LocalDateTime date) {
-		this.date = date;
-	}
-	public String getLocation() {
-		return location;
-	}
-	public void setLocation(String location) {
-		this.location = location;
-	}
-	@Column(name="location")
-	private String location;
-	public String getId() {
-		return id;
-	}
-	public void setId(String id) {
-		this.id = id;
-	}
-	public String getEvent_name() {
-		return event_name;
-	}
-	public void setEvent_name(String event_name) {
-		this.event_name = event_name;
-	}
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-//	public String getRegistrationStart() {
-//		return registrationStart;
-//	}
-//	public void setRegistrationStart(String registrationStart) {
-//		this.registrationStart = registrationStart;
-//	}
-//	public String getRegistrationEnd() {
-//		return registrationEnd;
-//	}
-//	public void setRegistrationEnd(String registrationEnd) {
-//		this.registrationEnd = registrationEnd;
-//	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Integer id;
+
+    @Column(name = "name", nullable = false)
+    private String event_name;
+
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "event_date", nullable = false)
+    private LocalDateTime date;
+
+    @Column(name = "location", nullable = false)
+    private String location;
+
+    @Column(name = "capacity", nullable = false)
+    private Integer capacity;
+
+    @Column(name = "available_seats", nullable = false)
+    private Integer availableSeats;
+
+    @Column(name = "registration_deadline")
+    private LocalDateTime registrationDeadline;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private EventStatus status;
+
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @Version
+    @Column(name = "version")
+    private Long version;
+
+    @OneToMany(mappedBy = "event")
+    private List<EventRegisterEntity> registrations;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getEvent_name() {
+        return event_name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public LocalDateTime getDate() {
+        return date;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public Integer getCapacity() {
+        return capacity;
+    }
+
+    public Integer getAvailableSeats() {
+        return availableSeats;
+    }
+
+    public LocalDateTime getRegistrationDeadline() {
+        return registrationDeadline;
+    }
+
+    public EventStatus getStatus() {
+        return status;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public Long getVersion() {
+        return version;
+    }
+
+    public List<EventRegisterEntity> getRegistrations() {
+        return registrations;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public void setEvent_name(String event_name) {
+        this.event_name = event_name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public void setCapacity(Integer capacity) {
+        this.capacity = capacity;
+    }
+
+    public void setAvailableSeats(Integer availableSeats) {
+        this.availableSeats = availableSeats;
+    }
+
+    public void setRegistrationDeadline(LocalDateTime registrationDeadline) {
+        this.registrationDeadline = registrationDeadline;
+    }
+
+    public void setStatus(EventStatus status) {
+        this.status = status;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public void setVersion(Long version) {
+        this.version = version;
+    }
+
+    public void setRegistrations(List<EventRegisterEntity> registrations) {
+        this.registrations = registrations;
+    }
 }

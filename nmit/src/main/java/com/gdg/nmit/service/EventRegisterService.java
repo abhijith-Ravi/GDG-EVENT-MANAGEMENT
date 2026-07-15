@@ -7,9 +7,8 @@ import com.gdg.nmit.entity.EventRegisterEntity;
 
 public interface EventRegisterService {
 
-	String RegisterForEvent(EventRegisterPayload payload);
-	
-	List<EventRegisterEntity> findRegisteredEvents(String username);
+    String registerForEvent(EventRegisterPayload payload);
 
+    List<EventRegisterEntity> findRegisteredEvents(Integer studentId);
 
 }

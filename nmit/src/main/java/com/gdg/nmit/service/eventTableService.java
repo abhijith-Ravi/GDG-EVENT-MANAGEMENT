@@ -7,19 +7,18 @@ import com.gdg.nmit.entity.EventTable;
 
 public interface eventTableService {
 
-	Boolean addEvents(addEventPayload payload);
+    Boolean addEvents(addEventPayload payload);
 
-	List<EventTable> findAllEvents();
+    List<EventTable> findAllEvents();
 
-	EventTable findByEventName(String eventName);
+    EventTable findByEventName(String eventName);
 
-	Boolean updateEvent(addEventPayload payload);
+    Boolean updateEvent(addEventPayload payload);
 
-	Boolean deleteEvent(addEventPayload payload);
+    Boolean deleteEvent(Integer eventId);
 
-	List<EventTable> findAllPastEvents();
+    List<EventTable> findAllPastEvents();
 
-	List<EventTable> findAllUpcomingEvents();
-
+    List<EventTable> findAllUpcomingEvents();
 
 }
