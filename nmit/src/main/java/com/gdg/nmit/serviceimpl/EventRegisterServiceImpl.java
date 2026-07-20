@@ -11,15 +11,21 @@ import com.gdg.nmit.entity.EventRegisterEntity;
 import com.gdg.nmit.entity.EventTable;
 import com.gdg.nmit.entity.RegistrationStatus;
 import com.gdg.nmit.entity.StudentEntity;
+import com.gdg.nmit.exception.NoSeatsAvailableException;
 import com.gdg.nmit.repository.EventRegisterRepository;
 import com.gdg.nmit.repository.StudentRepository;
 import com.gdg.nmit.repository.eventTableRepository;
 import com.gdg.nmit.service.EventRegisterService;
 
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class EventRegisterServiceImpl implements EventRegisterService {
+
+    private static final Logger log =
+            LoggerFactory.getLogger(EventRegisterServiceImpl.class);
 
     @Autowired
     private eventTableRepository eventTableRepository;
@@ -48,7 +54,7 @@ public class EventRegisterServiceImpl implements EventRegisterService {
         }
 
         if (event.getAvailableSeats() <= 0) {
-            return "No seats available";
+            throw new NoSeatsAvailableException("No seats available for this event.");
         }
 
         EventRegisterEntity registration = new EventRegisterEntity();
@@ -62,6 +68,7 @@ public class EventRegisterServiceImpl implements EventRegisterService {
 
         eventTableRepository.save(event);
         eventRegisterRepository.save(registration);
+        log.info("Event {} created", event.getEvent_name());
 
         return "Registration Successful";
     }

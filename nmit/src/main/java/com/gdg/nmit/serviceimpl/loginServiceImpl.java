@@ -11,6 +11,9 @@ import com.gdg.nmit.dto.updatePassword;
 import com.gdg.nmit.entity.LoginEntity;
 import com.gdg.nmit.entity.StudentEntity;
 import com.gdg.nmit.entity.UserRole;
+import com.gdg.nmit.exception.DuplicateResourceException;
+import com.gdg.nmit.exception.InvalidCredentialsException;
+import com.gdg.nmit.exception.UserNotFoundException;
 import com.gdg.nmit.repository.StudentRepository;
 import com.gdg.nmit.repository.loginRepository;
 import com.gdg.nmit.service.loginService;
@@ -20,10 +23,15 @@ import com.gdg.nmit.dto.LoginResponse;
 import com.gdg.nmit.security.JwtService;
 
 import org.springframework.transaction.annotation.Transactional;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Service
 public class loginServiceImpl implements loginService {
+
+    private static final Logger log =
+            LoggerFactory.getLogger(loginServiceImpl.class);
+
 
     @Autowired
     private loginRepository loginrepository;
@@ -57,11 +65,12 @@ public class loginServiceImpl implements loginService {
 
             StudentEntity student = new StudentEntity();
             if (studentRepository.findByEmail(payload.getEmail()).isPresent()) {
-                return false;
+                
+                throw new DuplicateResourceException("Email already exists.");
             }
 
             if (studentRepository.findByUsn(payload.getUsn()).isPresent()) {
-                return false;
+                throw new DuplicateResourceException("USN already exists.");
             }
 
             student.setUser(login);
@@ -93,6 +102,7 @@ public class loginServiceImpl implements loginService {
                 && passwordEncoder.matches(payload.getPassword(), user.get().getPwd())) {
 
             String token = jwtService.generateToken(user.get());
+            log.info("User {} signed in", user.get().getUsername());
 
             return new LoginResponse(
                     token,
@@ -100,8 +110,9 @@ public class loginServiceImpl implements loginService {
                     user.get().getUsertype().name()
             );
         }
+        log.warn("Invalid credentials for {}", user.get().getUsername());
 
-        return null;
+        throw new InvalidCredentialsException("Invalid username or password.");
     }
 
     @Override
@@ -115,7 +126,7 @@ public class loginServiceImpl implements loginService {
         }
 
         if (!passwordEncoder.matches(payload.getPassword(), user.get().getPwd())) {
-            return false;
+            throw new InvalidCredentialsException("Current password is incorrect.");
         }
 
         user.get().setPwd(passwordEncoder.encode(payload.getNewPassword()));
@@ -131,7 +142,7 @@ public class loginServiceImpl implements loginService {
         Optional<LoginEntity> user = loginrepository.findById(userId);
 
         if (user.isEmpty()) {
-            return false;
+            throw new UserNotFoundException("User not found.");
         }
 
         loginrepository.delete(user.get());

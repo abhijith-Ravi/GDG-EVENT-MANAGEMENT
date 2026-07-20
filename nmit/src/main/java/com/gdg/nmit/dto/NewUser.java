@@ -22,23 +22,23 @@ public class NewUser {
 
     // students table
 
-    @NotBlank(message = "USN is required")
+    // @NotBlank(message = "USN is required")
     private String usn;
 
-    @NotBlank(message = "Name is required")
+    // @NotBlank(message = "Name is required")
     private String name;
 
     @Email(message = "Invalid email format")
-    @NotBlank(message = "Email is required")
+    // @NotBlank(message = "Email is required")
     private String email;
 
     @Pattern(regexp = "^[0-9]{10}$", message = "Phone number must contain exactly 10 digits")
     private String phone;
 
-    @NotBlank(message = "Branch is required")
+    // @NotBlank(message = "Branch is required")
     private String branch;
 
-    @NotNull(message = "Semester is required")
+    // @NotNull(message = "Semester is required")
     private Integer semester;
     public String getUsername() {
         return username;

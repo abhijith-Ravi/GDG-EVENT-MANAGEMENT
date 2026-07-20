@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 
 import com.gdg.nmit.entity.LoginEntity;
 import com.gdg.nmit.repository.loginRepository;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 

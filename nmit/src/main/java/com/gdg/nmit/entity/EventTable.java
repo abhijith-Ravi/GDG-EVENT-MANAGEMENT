@@ -5,13 +5,17 @@ import java.util.List;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import java.io.Serializable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 
 @Data
 @Entity
 @Table(name = "events")
-public class EventTable {
+public class EventTable implements Serializable {
+
+    // private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,6 +58,7 @@ public class EventTable {
     private Long version;
 
     @OneToMany(mappedBy = "event")
+    @JsonIgnore
     private List<EventRegisterEntity> registrations;
 
     public Integer getId() {

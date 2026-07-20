@@ -54,7 +54,7 @@ public class SecurityConfig {
 
                         // Admin only
                         .requestMatchers(HttpMethod.POST, "/api/events")
-                        .denyAll()
+                        .hasRole("ADMIN")
 
                         .requestMatchers(HttpMethod.PUT, "/api/events")
                         .hasRole("ADMIN")

@@ -10,12 +10,21 @@ import org.springframework.stereotype.Service;
 import com.gdg.nmit.dto.addEventPayload;
 import com.gdg.nmit.entity.EventStatus;
 import com.gdg.nmit.entity.EventTable;
+import com.gdg.nmit.exception.EventNotFoundException;
 import com.gdg.nmit.repository.EventRegisterRepository;
 import com.gdg.nmit.repository.eventTableRepository;
 import com.gdg.nmit.service.eventTableService;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 @Service
 public class EventTableServiceImpl implements eventTableService {
+
+    private static final Logger log =
+            LoggerFactory.getLogger(EventTableServiceImpl.class);
 
     @Autowired
     private EventRegisterRepository eventRegisterRepository;
@@ -24,6 +33,7 @@ public class EventTableServiceImpl implements eventTableService {
     private eventTableRepository eventtableRepository;
 
     @Override
+    @CacheEvict(value = "events", allEntries = true)
     public Boolean addEvents(addEventPayload payload) {
 
         if (eventtableRepository.findByEventName(payload.getEvent_name()).isPresent()) {
@@ -60,12 +70,16 @@ public class EventTableServiceImpl implements eventTableService {
     }
 
     @Override
+    @Cacheable("events")
     public List<EventTable> findAllEvents() {
+        log.info("Fetching events from MySQL");
+
         return eventtableRepository.findAll();
     }
 
     @Override
     public EventTable findByEventName(String eventName) {
+        log.info("Fetching events from MySQL");
 
         return eventtableRepository
                 .findByEventName(eventName)
@@ -73,6 +87,7 @@ public class EventTableServiceImpl implements eventTableService {
     }
 
     @Override
+    @CacheEvict(value = "events", allEntries = true)
     public Boolean updateEvent(addEventPayload payload) {
 
         EventTable event = eventtableRepository
@@ -80,7 +95,7 @@ public class EventTableServiceImpl implements eventTableService {
                 .orElse(null);
 
         if (event == null) {
-            return false;
+            throw new EventNotFoundException("Event not found.");
         }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
@@ -106,17 +121,19 @@ public class EventTableServiceImpl implements eventTableService {
     }
 
     @Override
+    @CacheEvict(value = "events", allEntries = true)
     public Boolean deleteEvent(Integer eventId) {
 
         EventTable event = eventtableRepository.findById(eventId).orElse(null);
 
         if (event == null) {
-            return false;
+            throw new EventNotFoundException("Event not found.");
         }
 
         eventRegisterRepository.deleteByEventId(eventId);
 
         eventtableRepository.delete(event);
+        log.info("Event {} deleted", eventId);
 
         return true;
     }
