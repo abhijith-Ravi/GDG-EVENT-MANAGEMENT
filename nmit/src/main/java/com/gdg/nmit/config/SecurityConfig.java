@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.http.HttpMethod;
 
 import com.gdg.nmit.security.JwtAuthenticationFilter;
 
@@ -45,12 +46,33 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
 
+                        // Public endpoints
                         .requestMatchers(
                                 "/gdg/signup",
                                 "/gdg/signin"
                         ).permitAll()
 
-                        .anyRequest().authenticated())
+                        // Admin only
+                        .requestMatchers(HttpMethod.POST, "/api/events")
+                        .denyAll()
+
+                        .requestMatchers(HttpMethod.PUT, "/api/events")
+                        .hasRole("ADMIN")
+
+                        .requestMatchers(HttpMethod.DELETE, "/api/events/**")
+                        .hasRole("ADMIN")
+
+                        // Student and Admin
+                        .requestMatchers(HttpMethod.GET, "/api/**")
+                        .hasAnyRole("ADMIN", "STUDENT")
+
+                        // Student only
+                        .requestMatchers("/gdg/EventRegister")
+                        .hasRole("STUDENT")
+
+                        .anyRequest()
+                        .authenticated()
+                )
 
                 .httpBasic(Customizer.withDefaults());
 

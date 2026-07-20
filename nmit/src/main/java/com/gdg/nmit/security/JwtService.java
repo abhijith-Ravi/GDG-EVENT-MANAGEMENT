@@ -1,7 +1,10 @@
 package com.gdg.nmit.security;
 
 import javax.crypto.SecretKey;
+
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,6 +13,8 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+
+import com.gdg.nmit.entity.LoginEntity;
 
 @Service
 public class JwtService {
@@ -21,10 +26,15 @@ public class JwtService {
     private long expirationTime;
 
     // Generate JWT
-    public String generateToken(String username) {
+    public String generateToken(LoginEntity user) {
+
+        Map<String, Object> claims = new HashMap<>();
+
+        claims.put("role", user.getUsertype().name());
 
         return Jwts.builder()
-                .subject(username)
+                .claims(claims)
+                .subject(user.getUsername())
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + expirationTime))
                 .signWith(getSigningKey())

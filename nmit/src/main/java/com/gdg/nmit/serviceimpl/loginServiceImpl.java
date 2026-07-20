@@ -92,7 +92,7 @@ public class loginServiceImpl implements loginService {
         if (user.isPresent()
                 && passwordEncoder.matches(payload.getPassword(), user.get().getPwd())) {
 
-            String token = jwtService.generateToken(user.get().getUsername());
+            String token = jwtService.generateToken(user.get());
 
             return new LoginResponse(
                     token,
