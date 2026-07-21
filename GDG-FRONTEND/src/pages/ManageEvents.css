@@ -1,0 +1,109 @@
+.manage-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f172a 0%, #2563eb 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.manage-card {
+  width: min(100%, 480px);
+  background: rgba(255, 255, 255, 0.96);
+  padding: 28px;
+  border-radius: 24px;
+  box-shadow: 0 20px 45px rgba(15, 23, 42, 0.22);
+}
+
+.back-btn {
+  padding: 8px 14px;
+  margin-bottom: 16px;
+  border: 0;
+  border-radius: 999px;
+  background: #2563eb;
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+  transition: transform 0.2s;
+}
+
+.back-btn:hover {
+  transform: translateY(-2px);
+}
+
+.manage-card h1 {
+  margin: 0 0 8px;
+  color: #111827;
+  font-size: 1.5rem;
+}
+
+.helper {
+  color: #4b5563;
+  margin: 0 0 20px;
+}
+
+.error-message {
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  background: rgba(239, 68, 68, 0.1);
+  color: #dc2626;
+  border-radius: 8px;
+}
+
+.form-group {
+  margin-bottom: 12px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  font-family: inherit;
+}
+
+.submit-btn,
+.delete-btn {
+  width: 100%;
+  padding: 12px 14px;
+  margin-top: 16px;
+  border: 0;
+  border-radius: 999px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.submit-btn {
+  background: linear-gradient(135deg, #2563eb, #14b8a6);
+  color: white;
+}
+
+.delete-btn {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+}
+
+.submit-btn:hover:not(:disabled),
+.delete-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+.submit-btn:disabled,
+.delete-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+@media (max-width: 640px) {
+  .manage-card {
+    width: 100%;
+  }
+}

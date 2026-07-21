@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GDG Sign In</title>
+    <link rel="stylesheet" href="styleSignIn.css">
+</head>
+<body>
+    <div class="auth-card">
+        <h1>Welcome back</h1>
+        <p>Sign in to access GDG NMIT events and community updates.</p>
+        <form id="signinForm" onsubmit="event.preventDefault(); signin();">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit">Sign In</button>
+            <div class="helper-text">Don't have an account? <a href="2signup.html">Create one</a></div>
+        </form>
+        <p id="message" class="message"></p>
+    </div>
+
+    <script>
+    async function signin() {
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value;
+        const messageElement = document.getElementById('message');
+        const url = 'http://localhost:8080/gdg/signin';
+
+        messageElement.textContent = 'Signing you in...';
+        messageElement.style.color = '#2563eb';
+
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({ username, password })
+            });
+
+            if (!response.ok) throw new Error(`Server error: ${response.status} ${response.statusText}`);
+
+            const data = await response.json();
+
+            if (data.username && data.usertype) {
+                localStorage.setItem('username', data.username);
+                localStorage.setItem('usertype', data.usertype);
+                window.location.href = '3index.html';
+            } else {
+                throw new Error('Invalid response format.');
+            }
+        } catch (error) {
+            console.error('Error during signin:', error);
+            messageElement.textContent = `Unable to sign in: ${error.message}`;
+            messageElement.style.color = '#dc2626';
+        }
+    }
+    </script>
+</body>
+</html>

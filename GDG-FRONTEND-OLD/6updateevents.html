@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Update Event</title>
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", Roboto, Arial, sans-serif;
+      background: linear-gradient(135deg, #0f172a 0%, #2563eb 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .form-container {
+      width: min(100%, 420px);
+      background: rgba(255,255,255,0.96);
+      padding: 28px;
+      border-radius: 24px;
+      box-shadow: 0 20px 45px rgba(15, 23, 42, 0.22);
+    }
+
+    .form-title { margin: 0 0 8px; color: #111827; }
+    .helper { color: #4b5563; margin-bottom: 16px; }
+    .form-group { margin-bottom: 12px; }
+    label { display: block; margin-bottom: 6px; font-weight: 600; }
+    input, textarea { width: 100%; padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 12px; }
+    .update-button, .back-button { width: 100%; padding: 12px 14px; margin-top: 8px; border: 0; border-radius: 999px; font-weight: 700; cursor: pointer; }
+    .update-button { background: linear-gradient(135deg, #2563eb, #14b8a6); color: white; }
+    .back-button { background: #e5e7eb; color: #111827; }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2 class="form-title">Update an existing event</h2>
+    <p class="helper">Refresh the details for your next GDG session.</p>
+    <div class="form-group">
+      <label for="event_name">Event Name</label>
+      <input type="text" id="event_name" required>
+    </div>
+    <div class="form-group">
+      <label for="date">Date & Time</label>
+      <input type="datetime-local" id="date" required>
+    </div>
+    <div class="form-group">
+      <label for="description">Description</label>
+      <input type="text" id="description" required>
+    </div>
+    <div class="form-group">
+      <label for="location">Location</label>
+      <input type="text" id="location" required>
+    </div>
+    <button class="update-button" onclick="updateEvent()">Update Event</button>
+    <button class="back-button" onclick="goBack()">Back</button>
+  </div>
+
+  <script>
+    function goBack() { window.history.back(); }
+
+    async function updateEvent() {
+      const event_name = document.getElementById('event_name').value;
+      const date = document.getElementById('date').value;
+      const description = document.getElementById('description').value;
+      const location = document.getElementById('location').value;
+
+      try {
+        const response = await fetch('http://localhost:8080/api/events', {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ event_name, date, description, location })
+        });
+
+        if (response.ok) {
+          alert(`Event "${event_name}" updated successfully.`);
+          document.getElementById('event_name').value = '';
+          document.getElementById('date').value = '';
+          document.getElementById('description').value = '';
+          document.getElementById('location').value = '';
+        } else {
+          throw new Error(`Failed to update event: ${response.status} ${response.statusText}`);
+        }
+      } catch (error) {
+        console.error('Error updating event:', error);
+        alert('Failed to update event. Please try again later.');
+      }
+    }
+  </script>
+</body>
+</html>

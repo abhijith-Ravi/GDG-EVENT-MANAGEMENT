@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GDG Sign Up</title>
+    <link rel="stylesheet" href="styleinout.css">
+</head>
+<body>
+    <div class="container">
+        <h2>Create your account</h2>
+        <form id="signupForm" onsubmit="event.preventDefault(); signup();">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+
+            <label for="usertype">Account type</label>
+            <select id="usertype" name="usertype" required>
+                <option value="admin">Admin</option>
+                <option value="student">Student</option>
+            </select>
+
+            <button type="submit">Create account</button>
+        </form>
+        <p id="message" class="message"></p>
+    </div>
+
+    <script>
+        async function signup() {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value;
+            const usertype = document.getElementById('usertype').value;
+            const message = document.getElementById('message');
+
+            message.textContent = 'Creating your account...';
+            message.style.color = '#2563eb';
+
+            try {
+                const response = await fetch('http://localhost:8080/gdg/signup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password, usertype })
+                });
+
+                const isAuthenticated = await response.json();
+
+                if (response.ok && isAuthenticated === true) {
+                    message.textContent = 'Account created successfully. Redirecting...';
+                    message.style.color = 'green';
+                    setTimeout(() => window.location.href = 'index.html', 700);
+                } else {
+                    message.textContent = 'Signup failed. Try again.';
+                    message.style.color = 'red';
+                }
+            } catch (error) {
+                message.textContent = 'Signup failed. Please try again.';
+                message.style.color = 'red';
+            }
+        }
+    </script>
+</body>
+</html>

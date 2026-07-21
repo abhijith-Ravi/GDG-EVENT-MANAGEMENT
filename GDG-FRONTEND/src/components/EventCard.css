@@ -1,0 +1,54 @@
+.event-card {
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 20px;
+  padding: 18px;
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.06);
+  transition: transform 0.2s ease;
+}
+
+.event-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.12);
+}
+
+.event-pill {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: rgba(20, 184, 166, 0.12);
+  color: #14b8a6;
+  font-size: 0.77rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.event-card-title {
+  margin: 0 0 8px;
+  color: #111827;
+  font-size: 1.1rem;
+}
+
+.event-card-meta,
+.event-card-description {
+  color: #60708d;
+  line-height: 1.6;
+  margin: 0 0 8px;
+  font-size: 0.95rem;
+}
+
+.event-card-btn {
+  margin-top: 8px;
+  padding: 10px 14px;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #2563eb, #14b8a6);
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.event-card-btn:hover {
+  transform: translateY(-2px);
+}
