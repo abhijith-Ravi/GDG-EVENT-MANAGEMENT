@@ -13,6 +13,7 @@ import com.gdg.nmit.entity.EventTable;
 import com.gdg.nmit.exception.EventNotFoundException;
 import com.gdg.nmit.repository.EventRegisterRepository;
 import com.gdg.nmit.repository.eventTableRepository;
+import com.gdg.nmit.service.RabbitMQProducerService;
 import com.gdg.nmit.service.eventTableService;
 
 import org.springframework.cache.annotation.CacheEvict;
@@ -32,6 +33,8 @@ public class EventTableServiceImpl implements eventTableService {
     @Autowired
     private eventTableRepository eventtableRepository;
 
+     
+
     @Override
     @CacheEvict(value = "events", allEntries = true)
     public Boolean addEvents(addEventPayload payload) {
@@ -39,6 +42,7 @@ public class EventTableServiceImpl implements eventTableService {
         if (eventtableRepository.findByEventName(payload.getEvent_name()).isPresent()) {
             return false;
         }
+       
 
         EventTable event = new EventTable();
 
@@ -65,6 +69,8 @@ public class EventTableServiceImpl implements eventTableService {
         event.setStatus(EventStatus.valueOf(payload.getStatus().toUpperCase()));
 
         eventtableRepository.save(event);
+        
+        
 
         return true;
     }

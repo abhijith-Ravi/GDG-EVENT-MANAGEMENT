@@ -16,6 +16,7 @@ import com.gdg.nmit.repository.EventRegisterRepository;
 import com.gdg.nmit.repository.StudentRepository;
 import com.gdg.nmit.repository.eventTableRepository;
 import com.gdg.nmit.service.EventRegisterService;
+import com.gdg.nmit.service.RabbitMQProducerService;
 
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
@@ -35,6 +36,9 @@ public class EventRegisterServiceImpl implements EventRegisterService {
 
     @Autowired
     private StudentRepository studentRepository;
+
+    @Autowired
+    private RabbitMQProducerService rabbitMQProducerService;
 
     @Override
     @Transactional
@@ -69,6 +73,13 @@ public class EventRegisterServiceImpl implements EventRegisterService {
         eventTableRepository.save(event);
         eventRegisterRepository.save(registration);
         log.info("Event {} created", event.getEvent_name());
+
+
+        rabbitMQProducerService.sendRegistrationMessage(
+        "Hello Abhijith,\n\n"
+      + "You have successfully registered for Spring Boot Workshop.\n\n"
+      + "Thank you.\n"
+      + "GDG NMIT");
 
         return "Registration Successful";
     }

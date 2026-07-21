@@ -4,6 +4,8 @@ C:\projects\GDG-EVENT-MANAGEMENT\nmit\src\main\java\com\gdg\nmit\entity\UserRole
 C:\projects\GDG-EVENT-MANAGEMENT\nmit\src\main\java\com\gdg\nmit\service\eventTableService.java
 C:\projects\GDG-EVENT-MANAGEMENT\nmit\src\main\java\com\gdg\nmit\service\EventRegisterService.java
 C:\projects\GDG-EVENT-MANAGEMENT\nmit\src\main\java\com\gdg\nmit\entity\RegistrationStatus.java
+C:\projects\GDG-EVENT-MANAGEMENT\nmit\src\main\java\com\gdg\nmit\service\emailService.java
+C:\projects\GDG-EVENT-MANAGEMENT\nmit\src\main\java\com\gdg\nmit\serviceimpl\RabbitMQConsumer.java
 C:\projects\GDG-EVENT-MANAGEMENT\nmit\src\main\java\com\gdg\nmit\dto\addEventPayload.java
 C:\projects\GDG-EVENT-MANAGEMENT\nmit\src\main\java\com\gdg\nmit\exception\NoSeatsAvailableException.java
 C:\projects\GDG-EVENT-MANAGEMENT\nmit\src\main\java\com\gdg\nmit\controller\EventRegistration.java
@@ -14,10 +16,12 @@ C:\projects\GDG-EVENT-MANAGEMENT\nmit\src\main\java\com\gdg\nmit\entity\EventTab
 C:\projects\GDG-EVENT-MANAGEMENT\nmit\src\main\java\com\gdg\nmit\dto\ApiResponse.java
 C:\projects\GDG-EVENT-MANAGEMENT\nmit\src\main\java\com\gdg\nmit\service\loginService.java
 C:\projects\GDG-EVENT-MANAGEMENT\nmit\src\main\java\com\gdg\nmit\dto\NewUser.java
+C:\projects\GDG-EVENT-MANAGEMENT\nmit\src\main\java\com\gdg\nmit\config\RabbitMQConfig.java
 C:\projects\GDG-EVENT-MANAGEMENT\nmit\src\main\java\com\gdg\nmit\dto\EventRegisterPayload.java
 C:\projects\GDG-EVENT-MANAGEMENT\nmit\src\main\java\com\gdg\nmit\entity\StudentEntity.java
 C:\projects\GDG-EVENT-MANAGEMENT\nmit\src\main\java\com\gdg\nmit\repository\EventRegisterRepository.java
 C:\projects\GDG-EVENT-MANAGEMENT\nmit\src\main\java\com\gdg\nmit\dto\signin.java
+C:\projects\GDG-EVENT-MANAGEMENT\nmit\src\main\java\com\gdg\nmit\serviceimpl\emailServiceImpl.java
 C:\projects\GDG-EVENT-MANAGEMENT\nmit\src\main\java\com\gdg\nmit\config\WebConfig.java
 C:\projects\GDG-EVENT-MANAGEMENT\nmit\src\main\java\com\gdg\nmit\GlobalExceptionHandler.java
 C:\projects\GDG-EVENT-MANAGEMENT\nmit\src\main\java\com\gdg\nmit\security\JwtService.java
@@ -25,6 +29,7 @@ C:\projects\GDG-EVENT-MANAGEMENT\nmit\src\main\java\com\gdg\nmit\repository\logi
 C:\projects\GDG-EVENT-MANAGEMENT\nmit\src\main\java\com\gdg\nmit\entity\EventStatus.java
 C:\projects\GDG-EVENT-MANAGEMENT\nmit\src\main\java\com\gdg\nmit\exception\UserNotFoundException.java
 C:\projects\GDG-EVENT-MANAGEMENT\nmit\src\main\java\com\gdg\nmit\config\SecurityConfig.java
+C:\projects\GDG-EVENT-MANAGEMENT\nmit\src\main\java\com\gdg\nmit\serviceimpl\RabbitMQProducer.java
 C:\projects\GDG-EVENT-MANAGEMENT\nmit\src\main\java\com\gdg\nmit\dto\LoginResponse.java
 C:\projects\GDG-EVENT-MANAGEMENT\nmit\src\main\java\com\gdg\nmit\exception\InvalidCredentialsException.java
 C:\projects\GDG-EVENT-MANAGEMENT\nmit\src\main\java\com\gdg\nmit\entity\EventRegisterEntity.java
@@ -38,3 +43,4 @@ C:\projects\GDG-EVENT-MANAGEMENT\nmit\src\main\java\com\gdg\nmit\repository\Stud
 C:\projects\GDG-EVENT-MANAGEMENT\nmit\src\main\java\com\gdg\nmit\security\JwtAuthenticationEntryPoint.java
 C:\projects\GDG-EVENT-MANAGEMENT\nmit\src\main\java\com\gdg\nmit\serviceimpl\loginServiceImpl.java
 C:\projects\GDG-EVENT-MANAGEMENT\nmit\src\main\java\com\gdg\nmit\serviceimpl\EventRegisterServiceImpl.java
+C:\projects\GDG-EVENT-MANAGEMENT\nmit\src\main\java\com\gdg\nmit\service\RabbitMQProducerService.java

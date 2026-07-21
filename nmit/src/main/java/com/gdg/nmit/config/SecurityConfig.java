@@ -68,7 +68,7 @@ public class SecurityConfig {
 
                         // Student only
                         .requestMatchers("/gdg/EventRegister")
-                        .hasRole("STUDENT")
+                        .hasAnyRole("STUDENT","ADMIN")
 
                         .anyRequest()
                         .authenticated()
