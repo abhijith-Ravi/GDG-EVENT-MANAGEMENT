@@ -61,6 +61,17 @@ public class EventTable implements Serializable {
     @JsonIgnore
     private List<EventRegisterEntity> registrations;
 
+    @Column(name = "registration_fee")
+    private Double registrationFee;
+
+    public Double getRegistrationFee() {
+        return registrationFee;
+    }
+
+    public void setRegistrationFee(Double registrationFee) {
+        this.registrationFee = registrationFee;
+    }
+
     public Integer getId() {
         return id;
     }

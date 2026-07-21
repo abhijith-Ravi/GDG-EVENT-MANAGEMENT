@@ -31,6 +31,8 @@ public class addEventPayload {
     @NotBlank(message = "Event status is required")
     private String status;
 
+    private Double registrationFee;
+
 
     public Integer getId() {
         return id;
@@ -94,5 +96,13 @@ public class addEventPayload {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Double getRegistrationFee() {
+        return registrationFee;
+    }
+
+    public void setRegistrationFee(Double registrationFee) {
+        this.registrationFee = registrationFee;
     }
 }

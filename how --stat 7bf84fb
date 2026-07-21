@@ -1,0 +1,16 @@
+* [33m515f84b[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m Remove target directory from Git tracking
+* [33mef61c90[m Migrate frontend to React
+* [33m842d0bf[m implemented RabbitMQ..
+* [33m1be2431[m redis implemented..
+* [33m90fba3c[m[33m ([m[1;31morigin/fix/role-authorization[m[33m)[m Implemented JWT authentication and role infrastructure
+[31m|[m * [33m7bf84fb[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m another commit for changes branch
+[31m|[m[31m/[m  
+* [33m7db47f1[m implemented few changes in backend
+* [33m2c193e3[m Containerize application with Docker Compose
+* [33mdfb07fc[m Update README.md
+* [33m8c3e416[m name is renamed
+* [33m47141bf[m Update README.md
+* [33ma800144[m Add files via upload
+* [33m5a60e4b[m Update README.md
+* [33ma0ef263[m Add files via upload
+* [33mf601075[m Add files via upload

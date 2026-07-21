@@ -684,3 +684,36 @@ Caused by: java.io.EOFException: null
 2026-07-21T15:14:22.808+05:30  WARN 17072 --- [nmit] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
 2026-07-21T15:14:23.572+05:30  INFO 17072 --- [nmit] [restartedMain] com.gdg.nmit.NmitApplication             : Started NmitApplication in 3.788 seconds (process running for 2607.053)
 2026-07-21T15:14:23.576+05:30  INFO 17072 --- [nmit] [restartedMain] com.gdg.nmit.NmitApplication             : Application started successfully.
+2026-07-21T18:39:52.812+05:30  INFO 6352 --- [nmit] [restartedMain] com.gdg.nmit.NmitApplication             : Starting NmitApplication using Java 18.0.2 with PID 6352 (C:\projects\GDG-EVENT-MANAGEMENT\nmit\target\classes started by Darshini in C:\projects\GDG-EVENT-MANAGEMENT\nmit)
+2026-07-21T18:39:52.817+05:30 DEBUG 6352 --- [nmit] [restartedMain] com.gdg.nmit.NmitApplication             : Running with Spring Boot v3.2.11, Spring v6.1.14
+2026-07-21T18:39:52.820+05:30  INFO 6352 --- [nmit] [restartedMain] com.gdg.nmit.NmitApplication             : No active profile set, falling back to 1 default profile: "default"
+2026-07-21T18:40:01.865+05:30 DEBUG 6352 --- [nmit] [restartedMain] c.g.n.security.JwtAuthenticationFilter   : Filter 'jwtAuthenticationFilter' configured for use
+2026-07-21T18:40:03.104+05:30  WARN 6352 --- [nmit] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-07-21T18:40:04.556+05:30  INFO 6352 --- [nmit] [restartedMain] com.gdg.nmit.NmitApplication             : Started NmitApplication in 12.605 seconds (process running for 13.548)
+2026-07-21T18:40:04.561+05:30  INFO 6352 --- [nmit] [restartedMain] com.gdg.nmit.NmitApplication             : Application started successfully.
+2026-07-21T18:44:08.150+05:30  INFO 6352 --- [nmit] [http-nio-8080-exec-7] c.gdg.nmit.serviceimpl.loginServiceImpl  : User abhijith ravijiTH signed in
+2026-07-21T18:46:29.101+05:30  WARN 6352 --- [nmit] [http-nio-8080-exec-6] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [java.lang.RuntimeException: Unable to create payment order.]
+2026-07-21T18:48:19.306+05:30  WARN 6352 --- [nmit] [http-nio-8080-exec-8] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [java.lang.RuntimeException: Unable to create payment order.]
+2026-07-21T18:50:40.695+05:30  INFO 11068 --- [nmit] [restartedMain] com.gdg.nmit.NmitApplication             : Starting NmitApplication using Java 18.0.2 with PID 11068 (C:\projects\GDG-EVENT-MANAGEMENT\nmit\target\classes started by Darshini in C:\projects\GDG-EVENT-MANAGEMENT\nmit)
+2026-07-21T18:50:40.699+05:30 DEBUG 11068 --- [nmit] [restartedMain] com.gdg.nmit.NmitApplication             : Running with Spring Boot v3.2.11, Spring v6.1.14
+2026-07-21T18:50:40.701+05:30  INFO 11068 --- [nmit] [restartedMain] com.gdg.nmit.NmitApplication             : No active profile set, falling back to 1 default profile: "default"
+2026-07-21T18:50:49.467+05:30 DEBUG 11068 --- [nmit] [restartedMain] c.g.n.security.JwtAuthenticationFilter   : Filter 'jwtAuthenticationFilter' configured for use
+2026-07-21T18:50:50.899+05:30  WARN 11068 --- [nmit] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-07-21T18:50:52.397+05:30  INFO 11068 --- [nmit] [restartedMain] com.gdg.nmit.NmitApplication             : Started NmitApplication in 12.51 seconds (process running for 13.944)
+2026-07-21T18:50:52.403+05:30  INFO 11068 --- [nmit] [restartedMain] com.gdg.nmit.NmitApplication             : Application started successfully.
+2026-07-21T18:52:20.632+05:30  WARN 11068 --- [nmit] [http-nio-8080-exec-2] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [java.lang.RuntimeException: Unable to create payment order.]
+2026-07-21T19:36:47.883+05:30  INFO 11068 --- [nmit] [restartedMain] com.gdg.nmit.NmitApplication             : Starting NmitApplication using Java 18.0.2 with PID 11068 (C:\projects\GDG-EVENT-MANAGEMENT\nmit\target\classes started by Darshini in C:\projects\GDG-EVENT-MANAGEMENT\nmit)
+2026-07-21T19:36:47.885+05:30 DEBUG 11068 --- [nmit] [restartedMain] com.gdg.nmit.NmitApplication             : Running with Spring Boot v3.2.11, Spring v6.1.14
+2026-07-21T19:36:47.886+05:30  INFO 11068 --- [nmit] [restartedMain] com.gdg.nmit.NmitApplication             : No active profile set, falling back to 1 default profile: "default"
+2026-07-21T19:36:53.135+05:30 DEBUG 11068 --- [nmit] [restartedMain] c.g.n.security.JwtAuthenticationFilter   : Filter 'jwtAuthenticationFilter' configured for use
+2026-07-21T19:36:53.778+05:30  WARN 11068 --- [nmit] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-07-21T19:36:54.776+05:30  INFO 11068 --- [nmit] [restartedMain] com.gdg.nmit.NmitApplication             : Started NmitApplication in 7.167 seconds (process running for 2776.324)
+2026-07-21T19:36:54.783+05:30  INFO 11068 --- [nmit] [restartedMain] com.gdg.nmit.NmitApplication             : Application started successfully.
+2026-07-21T19:37:08.420+05:30  WARN 11068 --- [nmit] [http-nio-8080-exec-2] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [java.lang.RuntimeException: Unable to create payment order.]
+2026-07-21T19:38:57.300+05:30  INFO 13296 --- [nmit] [restartedMain] com.gdg.nmit.NmitApplication             : Starting NmitApplication using Java 18.0.2 with PID 13296 (C:\projects\GDG-EVENT-MANAGEMENT\nmit\target\classes started by Darshini in C:\projects\GDG-EVENT-MANAGEMENT\nmit)
+2026-07-21T19:38:57.306+05:30 DEBUG 13296 --- [nmit] [restartedMain] com.gdg.nmit.NmitApplication             : Running with Spring Boot v3.2.11, Spring v6.1.14
+2026-07-21T19:38:57.308+05:30  INFO 13296 --- [nmit] [restartedMain] com.gdg.nmit.NmitApplication             : No active profile set, falling back to 1 default profile: "default"
+2026-07-21T19:39:06.997+05:30 DEBUG 13296 --- [nmit] [restartedMain] c.g.n.security.JwtAuthenticationFilter   : Filter 'jwtAuthenticationFilter' configured for use
+2026-07-21T19:39:08.247+05:30  WARN 13296 --- [nmit] [restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-07-21T19:39:09.884+05:30  INFO 13296 --- [nmit] [restartedMain] com.gdg.nmit.NmitApplication             : Started NmitApplication in 13.701 seconds (process running for 14.691)
+2026-07-21T19:39:09.890+05:30  INFO 13296 --- [nmit] [restartedMain] com.gdg.nmit.NmitApplication             : Application started successfully.

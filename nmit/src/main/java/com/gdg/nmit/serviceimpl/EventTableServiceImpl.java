@@ -68,6 +68,8 @@ public class EventTableServiceImpl implements eventTableService {
 
         event.setStatus(EventStatus.valueOf(payload.getStatus().toUpperCase()));
 
+        event.setRegistrationFee(payload.getRegistrationFee());
+
         eventtableRepository.save(event);
         
         
@@ -120,6 +122,8 @@ public class EventTableServiceImpl implements eventTableService {
         }
 
         event.setStatus(EventStatus.valueOf(payload.getStatus().toUpperCase()));
+
+        event.setRegistrationFee(payload.getRegistrationFee());
 
         eventtableRepository.save(event);
 
