@@ -1,14 +1,19 @@
-# Base image with Java 21
-FROM eclipse-temurin:21-jdk
+FROM maven:3.9.9-eclipse-temurin-17 AS build
 
-# Working directory inside the container
 WORKDIR /app
 
-# Copy the generated JAR into the container
-COPY target/*.jar app.jar
+COPY pom.xml .
 
-# Expose the Spring Boot port
+COPY src ./src
+
+RUN mvn clean package -DskipTests
+
+FROM eclipse-temurin:17-jre
+
+WORKDIR /app
+
+COPY --from=build /app/target/*.jar app.jar
+
 EXPOSE 8080
 
-# Run the application
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java","-jar","app.jar"]

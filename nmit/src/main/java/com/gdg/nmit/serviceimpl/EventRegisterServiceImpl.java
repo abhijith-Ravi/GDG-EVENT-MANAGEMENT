@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.gdg.nmit.dto.EventRegisterPayload;
+import com.gdg.nmit.dto.RegistrationEmailDTO;
 import com.gdg.nmit.entity.EventRegisterEntity;
 import com.gdg.nmit.entity.EventTable;
 import com.gdg.nmit.entity.RegistrationStatus;
@@ -75,11 +76,19 @@ public class EventRegisterServiceImpl implements EventRegisterService {
         log.info("Event {} created", event.getEvent_name());
 
 
-        rabbitMQProducerService.sendRegistrationMessage(
-        "Hello Abhijith,\n\n"
-      + "You have successfully registered for Spring Boot Workshop.\n\n"
-      + "Thank you.\n"
-      + "GDG NMIT");
+        RegistrationEmailDTO dto = new RegistrationEmailDTO();
+
+        dto.setStudentName(student.getName());
+
+        dto.setStudentEmail(student.getEmail());
+
+        dto.setEventName(event.getEvent_name());
+
+        dto.setEventDate(event.getDate().toString());
+
+        dto.setLocation(event.getLocation());
+
+        rabbitMQProducerService.sendRegistrationMessage(dto);
 
         return "Registration Successful";
     }
