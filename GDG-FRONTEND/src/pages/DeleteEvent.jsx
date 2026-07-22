@@ -4,24 +4,32 @@ import { eventService } from '../api/eventService';
 import './ManageEvents.css';
 
 export const DeleteEvent = () => {
-  const [eventName, setEventName] = useState('');
+  const [eventId, setEventId] = useState('');
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleDelete = async (e) => {
     e.preventDefault();
-    const confirmed = window.confirm(`Are you sure you want to delete "${eventName}"?`);
+    const id = parseInt(eventId, 10);
+    if (isNaN(id)) {
+      setError('Please enter a valid event ID.');
+      return;
+    }
+    const confirmed = window.confirm(`Are you sure you want to delete event with ID "${id}"?`);
     if (!confirmed) return;
 
     setLoading(true);
     setError('');
+    setSuccess('');
 
     try {
-      await eventService.deleteEvent(eventName);
-      alert('Event deleted successfully!');
-      setEventName('');
-      navigate('/dashboard');
+      // Backend: DELETE /api/events/{id}
+      await eventService.deleteEvent(id);
+      setSuccess('Event deleted successfully!');
+      setEventId('');
+      setTimeout(() => navigate('/dashboard'), 1500);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -37,15 +45,17 @@ export const DeleteEvent = () => {
         <p className="helper">Delete a past or canceled session from the event list.</p>
 
         {error && <div className="error-message">{error}</div>}
+        {success && <div className="success-message">{success}</div>}
 
         <form onSubmit={handleDelete}>
           <div className="form-group">
-            <label htmlFor="event_name">Event Name</label>
+            <label htmlFor="event_id">Event ID</label>
             <input
-              type="text"
-              id="event_name"
-              value={eventName}
-              onChange={(e) => setEventName(e.target.value)}
+              type="number"
+              id="event_id"
+              value={eventId}
+              onChange={(e) => setEventId(e.target.value)}
+              placeholder="Enter the numeric event ID"
               required
             />
           </div>

@@ -50,6 +50,23 @@
   border-radius: 8px;
 }
 
+.success-message {
+  padding: 12px 14px;
+  margin-bottom: 16px;
+  background: rgba(34, 197, 94, 0.1);
+  color: #16a34a;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.info-message {
+  padding: 10px 14px;
+  margin-bottom: 12px;
+  background: rgba(37, 99, 235, 0.08);
+  color: #2563eb;
+  border-radius: 8px;
+}
+
 .form-group {
   margin-bottom: 12px;
 }
@@ -61,12 +78,14 @@
 }
 
 .form-group input,
-.form-group textarea {
+.form-group textarea,
+.form-group select {
   width: 100%;
   padding: 10px 12px;
   border: 1px solid #d1d5db;
   border-radius: 12px;
   font-family: inherit;
+  box-sizing: border-box;
 }
 
 .submit-btn,

@@ -1,48 +1,43 @@
-const API_BASE = 'http://localhost:8080';
+const API_BASE = import.meta.env.VITE_API_URL || '';
+
+
+async function safeFetch(url, options) {
+  try {
+    return await fetch(url, options);
+  } catch (err) {
+    if (err.name === 'TypeError' && err.message.includes('fetch')) {
+      throw new Error('Failed to connect to backend server. Please make sure the Spring Boot application is running on port 8080.');
+    }
+    throw err;
+  }
+}
 
 export const authService = {
-  signup: async (username, password, usertype) => {
-    const response = await fetch(`${API_BASE}/gdg/signup`, {
+  signup: async (userData) => {
+    const response = await safeFetch(`${API_BASE}/gdg/signup`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password, usertype }),
+      body: JSON.stringify(userData),
     });
-    if (!response.ok) throw new Error('Signup failed');
     const result = await response.json();
-    if (result === true) {
-      return true;
+    if (!response.ok || !result.success) {
+      throw new Error(result.message || 'Signup failed');
     }
-    throw new Error('Signup failed');
+    return result.data; // Boolean true
   },
 
   signin: async (username, password) => {
-    const response = await fetch(`${API_BASE}/gdg/signin`, {
+    const response = await safeFetch(`${API_BASE}/gdg/signin`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username, password }),
     });
-    if (!response.ok) throw new Error('Signin failed');
-    return response.json();
-  },
-
-  updatePassword: async (username, oldPassword, newPassword) => {
-    const response = await fetch(`${API_BASE}/gdg/updateLogin`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, oldPassword, newPassword }),
-    });
-    if (!response.ok) throw new Error('Update failed');
-    return response.json();
-  },
-
-  deleteAccount: async (username, password) => {
-    const response = await fetch(`${API_BASE}/gdg/deletelogin`, {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password }),
-    });
-    if (!response.ok) throw new Error('Delete failed');
-    return response.json();
+    const result = await response.json();
+    if (!response.ok || !result.success) {
+      throw new Error(result.message || 'Invalid username or password');
+    }
+    // result.data = { token, username, role }
+    return result.data;
   },
 };
 
@@ -50,25 +45,41 @@ export const authUtils = {
   getUser: () => {
     return {
       username: localStorage.getItem('username'),
-      usertype: localStorage.getItem('usertype'),
+      role: localStorage.getItem('role'),
+      studentId: localStorage.getItem('studentId'),
     };
   },
 
-  setUser: (username, usertype) => {
+  setUser: (username, role, token, studentId) => {
     localStorage.setItem('username', username);
-    localStorage.setItem('usertype', usertype);
+    localStorage.setItem('role', role);
+    localStorage.setItem('token', token);
+    if (studentId != null) {
+      localStorage.setItem('studentId', String(studentId));
+    }
   },
 
   clearUser: () => {
     localStorage.removeItem('username');
-    localStorage.removeItem('usertype');
+    localStorage.removeItem('role');
+    localStorage.removeItem('token');
+    localStorage.removeItem('studentId');
+  },
+
+  getToken: () => localStorage.getItem('token'),
+
+  getRole: () => localStorage.getItem('role'),
+
+  getStudentId: () => {
+    const id = localStorage.getItem('studentId');
+    return id ? parseInt(id, 10) : null;
   },
 
   isAuthenticated: () => {
-    return !!localStorage.getItem('username') && !!localStorage.getItem('usertype');
+    return !!localStorage.getItem('token') && !!localStorage.getItem('username');
   },
 
   isAdmin: () => {
-    return localStorage.getItem('usertype') === 'admin';
+    return localStorage.getItem('role') === 'ADMIN';
   },
 };

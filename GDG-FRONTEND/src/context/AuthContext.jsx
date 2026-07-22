@@ -8,12 +8,19 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
+    const token = authUtils.getToken();
     const userData = authUtils.getUser();
-    if (userData.username && userData.usertype) {
+    if (token && userData.username && userData.role) {
       setUser(userData);
       setIsAuthenticated(true);
     }
   }, []);
+
+  const login = (username, role, token, studentId) => {
+    authUtils.setUser(username, role, token, studentId);
+    setUser({ username, role, studentId: studentId ?? null });
+    setIsAuthenticated(true);
+  };
 
   const logout = () => {
     authUtils.clearUser();
@@ -22,7 +29,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, isAuthenticated, logout, setUser, setIsAuthenticated }}>
+    <AuthContext.Provider value={{ user, isAuthenticated, login, logout, setUser, setIsAuthenticated }}>
       {children}
     </AuthContext.Provider>
   );

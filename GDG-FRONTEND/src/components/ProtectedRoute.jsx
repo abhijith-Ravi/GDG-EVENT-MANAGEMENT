@@ -13,7 +13,8 @@ export const ProtectedRoute = ({ children, requiredRole }) => {
       return;
     }
 
-    if (requiredRole && user?.usertype !== requiredRole) {
+    // Backend returns role as 'ADMIN' or 'STUDENT' (uppercase)
+    if (requiredRole && user?.role !== requiredRole.toUpperCase()) {
       navigate('/dashboard');
       return;
     }

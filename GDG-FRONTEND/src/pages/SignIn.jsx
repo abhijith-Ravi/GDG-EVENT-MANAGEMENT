@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { authService, authUtils } from '../api/authService';
+import { authService } from '../api/authService';
 import { AuthContext } from '../context/AuthContext';
 import './SignIn.css';
 
@@ -9,7 +9,7 @@ export const SignIn = () => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { setUser, setIsAuthenticated } = useContext(AuthContext);
+  const { login } = useContext(AuthContext);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,13 +22,12 @@ export const SignIn = () => {
     setError('');
 
     try {
+      // result = { token, username, role }  (LoginResponse unwrapped from ApiResponse.data)
       const result = await authService.signin(formData.username, formData.password);
-      authUtils.setUser(result.username, result.usertype);
-      setUser({ username: result.username, usertype: result.usertype });
-      setIsAuthenticated(true);
+      login(result.username, result.role, result.token, null);
       navigate('/dashboard');
     } catch (err) {
-      setError(err.message || 'Sign in failed');
+      setError(err.message || 'Sign in failed. Check your credentials.');
     } finally {
       setLoading(false);
     }

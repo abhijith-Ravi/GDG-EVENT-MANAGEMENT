@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 import { eventService } from '../api/eventService';
+import { paymentService } from '../api/paymentService';
 import { EventCard } from '../components/EventCard';
 import { Modal } from '../components/Modal';
 import './Dashboard.css';
@@ -13,63 +14,82 @@ export const Dashboard = () => {
   const [pastEvents, setPastEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+
+  // Registration / payment modal state
   const [showRegisterModal, setShowRegisterModal] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
-  const [registrationForm, setRegistrationForm] = useState({
-    name: '',
-    usn: '',
-    branch: '',
-    mailid: '',
-    phoneno: '',
-    semester: '',
-  });
+  const [studentId, setStudentId] = useState('');
+  const [regStatus, setRegStatus] = useState(''); // 'idle' | 'paying' | 'registering' | 'success' | 'error'
+  const [regMessage, setRegMessage] = useState('');
+
+  const isAdmin = user?.role === 'ADMIN';
 
   useEffect(() => {
     const fetchEvents = async () => {
       try {
         const upcoming = await eventService.getAllUpcomingEvents();
         const past = await eventService.getAllPastEvents();
-        setUpcomingEvents(upcoming);
-        setPastEvents(past);
+        setUpcomingEvents(Array.isArray(upcoming) ? upcoming : []);
+        setPastEvents(Array.isArray(past) ? past : []);
       } catch (err) {
         setError(err.message);
       } finally {
         setLoading(false);
       }
     };
-
     fetchEvents();
   }, []);
 
   const handleRegisterClick = (event) => {
     setSelectedEvent(event);
+    setStudentId('');
+    setRegStatus('idle');
+    setRegMessage('');
     setShowRegisterModal(true);
   };
 
-  const handleRegistrationChange = (e) => {
-    const { name, value } = e.target;
-    setRegistrationForm((prev) => ({ ...prev, [name]: value }));
+  const closeModal = () => {
+    setShowRegisterModal(false);
+    setSelectedEvent(null);
+    setRegStatus('idle');
+    setRegMessage('');
   };
 
   const handleSubmitRegistration = async (e) => {
     e.preventDefault();
+    const sid = parseInt(studentId, 10);
+    if (isNaN(sid)) {
+      setRegMessage('Please enter a valid Student ID.');
+      setRegStatus('error');
+      return;
+    }
+
+    const isPaid = selectedEvent?.registrationFee && selectedEvent.registrationFee > 0;
+
     try {
-      await eventService.registerForEvent({
-        ...registrationForm,
-        event_name: selectedEvent.event_name,
-      });
-      alert('Registration submitted successfully!');
-      setShowRegisterModal(false);
-      setRegistrationForm({
-        name: '',
-        usn: '',
-        branch: '',
-        mailid: '',
-        phoneno: '',
-        semester: '',
-      });
+      if (isPaid) {
+        // Step 1: Payment flow
+        setRegStatus('paying');
+        setRegMessage('Opening payment gateway…');
+        await paymentService.initiatePayment(
+          selectedEvent.id,
+          selectedEvent.event_name,
+          user
+        );
+        // Step 2: Only register after verified payment
+        setRegStatus('registering');
+        setRegMessage('Payment verified. Completing registration…');
+      } else {
+        setRegStatus('registering');
+        setRegMessage('Submitting registration…');
+      }
+
+      await eventService.registerForEvent(sid, selectedEvent.id);
+      setRegStatus('success');
+      setRegMessage('Registration successful! 🎉');
     } catch (err) {
-      alert(err.message);
+      setRegStatus('error');
+      setRegMessage(err.message || 'Registration failed. Please try again.');
     }
   };
 
@@ -97,9 +117,9 @@ export const Dashboard = () => {
           <div className="hero-panel">
             <div className="welcome-card">
               <h2>Hello, {user?.username}</h2>
-              <p>{user?.usertype === 'admin' ? 'Admin access is enabled for event management.' : 'Student access is ready for registrations and discovery.'}</p>
+              <p>{isAdmin ? 'Admin access is enabled for event management.' : 'Student access is ready for registrations and discovery.'}</p>
             </div>
-            {user?.usertype === 'admin' && (
+            {isAdmin && (
               <div className="quick-actions">
                 <button className="action-card" onClick={() => navigate('/events/create')}>
                   Add event
@@ -148,38 +168,54 @@ export const Dashboard = () => {
         </section>
       </div>
 
-      <Modal isOpen={showRegisterModal} title="Event Registration" onClose={() => setShowRegisterModal(false)}>
-        <form onSubmit={handleSubmitRegistration}>
-          <div className="form-group">
-            <label>Event</label>
-            <p className="form-value">{selectedEvent?.event_name}</p>
+      <Modal isOpen={showRegisterModal} title="Event Registration" onClose={closeModal}>
+        {regStatus === 'success' ? (
+          <div>
+            <p className="success-message">{regMessage}</p>
+            <button className="primary-btn" onClick={closeModal} style={{ marginTop: '1rem' }}>Close</button>
           </div>
-          <div className="form-group">
-            <label htmlFor="name">Name</label>
-            <input type="text" id="name" name="name" value={registrationForm.name} onChange={handleRegistrationChange} required />
-          </div>
-          <div className="form-group">
-            <label htmlFor="usn">USN</label>
-            <input type="text" id="usn" name="usn" value={registrationForm.usn} onChange={handleRegistrationChange} required />
-          </div>
-          <div className="form-group">
-            <label htmlFor="branch">Branch</label>
-            <input type="text" id="branch" name="branch" value={registrationForm.branch} onChange={handleRegistrationChange} required />
-          </div>
-          <div className="form-group">
-            <label htmlFor="mailid">Email</label>
-            <input type="email" id="mailid" name="mailid" value={registrationForm.mailid} onChange={handleRegistrationChange} required />
-          </div>
-          <div className="form-group">
-            <label htmlFor="phoneno">Phone</label>
-            <input type="text" id="phoneno" name="phoneno" value={registrationForm.phoneno} onChange={handleRegistrationChange} required />
-          </div>
-          <div className="form-group">
-            <label htmlFor="semester">Semester</label>
-            <input type="number" id="semester" name="semester" value={registrationForm.semester} onChange={handleRegistrationChange} required />
-          </div>
-          <button type="submit" className="primary-btn">Submit Registration</button>
-        </form>
+        ) : (
+          <form onSubmit={handleSubmitRegistration}>
+            <div className="form-group">
+              <label>Event</label>
+              <p className="form-value">{selectedEvent?.event_name}</p>
+            </div>
+            {selectedEvent?.registrationFee > 0 && (
+              <div className="form-group">
+                <label>Registration Fee</label>
+                <p className="form-value">₹{selectedEvent.registrationFee}</p>
+              </div>
+            )}
+            <div className="form-group">
+              <label htmlFor="studentId">Your Student ID</label>
+              <input
+                type="number"
+                id="studentId"
+                value={studentId}
+                onChange={(e) => setStudentId(e.target.value)}
+                placeholder="Enter your student ID"
+                required
+                disabled={regStatus === 'paying' || regStatus === 'registering'}
+              />
+            </div>
+            {regMessage && (
+              <p className={regStatus === 'error' ? 'error-message' : 'info-message'}>{regMessage}</p>
+            )}
+            <button
+              type="submit"
+              className="primary-btn"
+              disabled={regStatus === 'paying' || regStatus === 'registering'}
+            >
+              {regStatus === 'paying'
+                ? 'Processing Payment…'
+                : regStatus === 'registering'
+                ? 'Registering…'
+                : selectedEvent?.registrationFee > 0
+                ? `Pay ₹${selectedEvent.registrationFee} & Register`
+                : 'Register (Free)'}
+            </button>
+          </form>
+        )}
       </Modal>
     </div>
   );
