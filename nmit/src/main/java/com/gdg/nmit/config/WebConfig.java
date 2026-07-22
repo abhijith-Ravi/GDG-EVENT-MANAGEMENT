@@ -16,7 +16,7 @@ public class WebConfig {
                 registry.addMapping("/**") // Allow all paths to be accessed
                         .allowedOrigins(
                             "http://localhost:5173",
-                            "https://your-project.vercel.app"
+                            "https://gdg-event-management.vercel.app/"
                         )
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
